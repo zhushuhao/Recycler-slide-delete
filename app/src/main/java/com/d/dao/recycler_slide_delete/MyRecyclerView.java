@@ -21,9 +21,7 @@ import android.widget.TextView;
 public class MyRecyclerView extends RecyclerView {
 
 
-    private int mScreenWidth;    // 屏幕宽度
 
-    String TAG = getClass().getSimpleName();
     private int mTouchSlop;//多少算是发生了滑动
 
     private int maxLength;//滑动的最大距离,超出不再增加
@@ -46,8 +44,6 @@ public class MyRecyclerView extends RecyclerView {
         //滑动的最大距离
         maxLength = ((int) (100 * context.getResources().getDisplayMetrics().density + 0.5f));
         mScroller = new Scroller(context, new LinearInterpolator(context, null));
-
-
     }
 
 
@@ -61,7 +57,6 @@ public class MyRecyclerView extends RecyclerView {
     private LinearLayout root;//根布局
     private TextView tv;//第几页
     private TextView delete;//删除
-
 
     private int moveX, moveY;// action_move时的坐标
 
@@ -214,11 +209,11 @@ public class MyRecyclerView extends RecyclerView {
                 int scrollX = root.getScrollX();
                 Log.e("scrollX", "" + scrollX);//117
                 if (Math.abs(scrollX) > maxLength / 2) {//向左
-                    mScroller.startScroll(scrollX, 0, maxLength - scrollX, 0, (maxLength - scrollX) / maxLength * 1500);
+                    mScroller.startScroll(scrollX, 0, maxLength - scrollX, 0, (maxLength - scrollX) / maxLength * 1500 < 100 ? 100 : (maxLength - scrollX) / maxLength * 1500);
                     invalidate();
                     isMoving = false;
                 } else {//向右
-                    mScroller.startScroll(scrollX, 0, -scrollX, 0, Math.abs(scrollX) / maxLength * 1500);
+                    mScroller.startScroll(scrollX, 0, -scrollX, 0, Math.abs(scrollX) / maxLength * 1500 <100 ? 100:Math.abs(scrollX) / maxLength * 1500);
                     invalidate();
                     isMoving = false;
                 }
@@ -231,7 +226,6 @@ public class MyRecyclerView extends RecyclerView {
         }
     }
 
-
     //必须重写
     @Override
     public void computeScroll() {
@@ -242,7 +236,7 @@ public class MyRecyclerView extends RecyclerView {
         }
     }
 
-
+    //删除前关闭
     public void close() {
         root.scrollBy(-maxLength, 0);
     }
