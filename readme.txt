@@ -1,0 +1,2 @@
+app:类似QQ侧滑删除
+AllCheck:对整体item做动画,可以用来做全选删除
